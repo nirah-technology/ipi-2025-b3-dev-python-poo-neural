@@ -10,6 +10,10 @@ def main():
         .with_hidden_layer(10) \
         .with_output_layer(2) \
         .build()
+    
+    for layer in neural_network.layers:
+        for neurone in layer.neurones:
+            print(neurone.weights)
 
 
 if __name__ == "__main__":
