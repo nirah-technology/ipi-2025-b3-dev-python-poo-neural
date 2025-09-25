@@ -1,6 +1,6 @@
 from typing import Optional, List
 
-from .layers import InputLayer, HiddenLayer, OutputLayer
+from .layers import Layer, InputLayer, HiddenLayer, OutputLayer
 from .neurones import Neurone, SigmoidNeurone
 
 class NeuralNetworkBuilder:
@@ -9,7 +9,7 @@ class NeuralNetworkBuilder:
         self.__hidden_layers: List[HiddenLayer] = []
         self.__output_layer: Optional[OutputLayer] = None
 
-    def with_input_layer(self, neurones_count: int):
+    def with_input_layer(self, neurones_count: int) -> "NeuralNetworkBuilder":
         neurones: List[Neurone] = []
         for _ in range(neurones_count):
             neurone = SigmoidNeurone(0)
@@ -17,7 +17,7 @@ class NeuralNetworkBuilder:
         self.__input_layer = InputLayer(neurones)
         return self
     
-    def with_hidden_layer(self, neurones_count: int):
+    def with_hidden_layer(self, neurones_count: int) -> "NeuralNetworkBuilder":
         neurones: List[Neurone] = []
         neurones_count_from_previous_layer: int = 0
 
@@ -35,7 +35,7 @@ class NeuralNetworkBuilder:
         self.__hidden_layers.append(hidden_layer)
         return self
 
-    def with_output_layer(self, neurones_count: int):
+    def with_output_layer(self, neurones_count: int) -> "NeuralNetworkBuilder":
         neurones: List[Neurone] = []
         neurones_count_from_previous_layer: int = 0
 
@@ -51,7 +51,7 @@ class NeuralNetworkBuilder:
         self.__output_layer = OutputLayer(neurones)
         return self
 
-    def build(self):
+    def build(self) -> "NeuralNetwork":
         return NeuralNetwork(self.__input_layer, self.__hidden_layers, self.__output_layer)   
 
 class NeuralNetwork:
@@ -61,7 +61,7 @@ class NeuralNetwork:
             hidden_layers: list[HiddenLayer], 
             output_layer: OutputLayer):
 
-        self.layers = []
+        self.layers: List[Layer] = []
         self.layers.append(input_layer)
         self.layers.extend(hidden_layers)
         self.layers.append(output_layer)
